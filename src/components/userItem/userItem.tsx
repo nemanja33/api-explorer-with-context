@@ -1,7 +1,7 @@
-import { UserType } from "../../../hooks/useFetchData"
+import { User } from '../../types/user'
 import styles from './styles.module.scss'
 
-const UserItem = (post: UserType) => {
+const UserItem = (post: User) => {
   return (
     <li className={styles.item}>
       <span className={styles.title}>{post.title}</span>

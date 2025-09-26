@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { UserContext } from "../../../context/users/userContext.tsx";
+import { UserContext } from "../../context/users/userContext.tsx";
 import styles from './styles.module.scss'
 
-const Search = () => {
-  const { handleFilter } = useContext(UserContext)
+const SearchBar = () => {
+  const { setSearchQuery } = useContext(UserContext)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    handleFilter(value);
+    setSearchQuery(value);
   }
 
   return (
@@ -18,4 +18,4 @@ const Search = () => {
   )
 };
 
-export default Search;
+export default SearchBar;

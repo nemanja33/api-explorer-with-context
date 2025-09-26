@@ -1,14 +1,14 @@
 import { lazy, Suspense } from "react";
 import UserProvider from "../../context/users/userContext.tsx";
 import Spinner from "../spinner/spinner.tsx";
-import Search from "./search/search.tsx";
+import SearchBar from "../searchBar/searchBar.tsx";
 
-const UserList = lazy(() => import('./userList/userList.tsx'))
+const UserList = lazy(() => import('../userList/userList.tsx'))
 
 const Users = () => {
   return (
     <UserProvider>
-      <Search />
+      <SearchBar />
       <Suspense fallback={<Spinner />}>
         <UserList />
       </Suspense>

@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react";
-
-type ErrorType = {
-  message: string
-}
-
-type UserType = {
-  userId: string,
-  id: number,
-  title: string,
-  completed: boolean
-}
+import { ErrorType } from "../types/logs";
+import { User } from "../types/user";
 
 const API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
 const useFetchData = () => {
-  const [ data, setData ] = useState<unknown[]>([]);
+  const [ data, setData ] = useState<User[]>([]);
   const [ error, setError ] = useState<ErrorType>()
 
   const apiCall = async () => {
     try {
       const req = await fetch(API_URL);
-      const data = await req.json() as UserType[]
+      const data = await req.json() as User[]
       setData(data)
 
     } catch (error: any) {
@@ -43,6 +34,5 @@ const useFetchData = () => {
 }
 
 export {
-  useFetchData,
-  UserType
+  useFetchData
 }

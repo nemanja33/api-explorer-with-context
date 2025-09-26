@@ -1,14 +1,13 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
-import { useFetchData, UserType } from "../../hooks/useFetchData.tsx";
+import React, { createContext, useMemo, useEffect, useState } from "react";
+import { useFetchData } from "../../hooks/useFetchData.tsx";
+import { User, UserContextValue } from "../../types/user";
 
-type UserContextType = {
-  filteredData: UserType[];
-  handleFilter: (input: string) => void;
-}
-
-export const UserContext = createContext<UserContextType>({
-  filteredData: [],
-  handleFilter: () => {}
+export const UserContext = createContext<UserContextValue>({
+  users: [],
+  filteredUsers: [],
+  error: null,
+  searchQuery: "",
+  setSearchQuery: () => {}
 })
 
 const UserProvider = ({
@@ -16,24 +15,22 @@ const UserProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const { data, error } = useFetchData();
-  const [ filteredData, setFilteredData ] = useState<UserType[]>([])
+  const { data: users, error } = useFetchData();
+  const [, setFilteredData ] = useState<User[]>([]);
+  const [ searchQuery, setSearchQuery ] = useState<string>("");
 
   useEffect(() => {
-    setFilteredData(data as UserType[])
-  }, [data])
+    setFilteredData(users as User[])
+  }, [users])
 
-  const handleFilter = useCallback((input: string) => {
-    const newData = (data as UserType[])?.filter((item) => 
-      item?.title && item.title.toLowerCase().includes(input.toLowerCase())
-    );
-    setFilteredData(newData)
-  }, [data, setFilteredData])
-
-  if (error) return <div>{error?.message}</div>
+  const filteredUsers = useMemo(() =>
+    (users as User[]).filter(u => u.title.toLowerCase().includes(searchQuery.toLowerCase())),
+    [searchQuery, users]
+  );
+  const value = useMemo(() => ({users: users as User[], filteredUsers, error: error?.message || null, searchQuery, setSearchQuery }), [users, filteredUsers, error, searchQuery, setSearchQuery] )
 
   return (
-    <UserContext.Provider value={{handleFilter, filteredData }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   )
