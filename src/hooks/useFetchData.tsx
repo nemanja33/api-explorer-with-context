@@ -1,46 +1,45 @@
-import { useCallback, useEffect, useState } from 'react';
-import { ErrorType } from '../types/logs';
-import { User } from '../types/user';
+import { useCallback, useEffect, useState } from "react";
+import { ErrorType } from "../types/logs";
 
-const useFetchData = <T,>(
+const useFetchData = <T, U>(
   url: string,
 ): {
-  data: User[] | null
-  fetchError: ErrorType | undefined
+  data: T | null;
+  fetchError: U | undefined;
 } => {
-  const [data, setData] = useState<User[]>([]);
-  const [fetchError, setFetchError] = useState<ErrorType>();
+  const [data, setData] = useState<T | null>(null);
+  const [fetchError, setFetchError] = useState<U | undefined>(undefined);
 
-  const apiCall = useCallback(async () => {
+  const apiCall = useCallback(async (): Promise<void> => {
     try {
       const res = await fetch(url);
 
       if (!res.ok) {
         setFetchError({
-          message: 'Problem fetching data!',
-        })
-        return
+          message: "Problem fetching data!",
+        } as U);
+        return;
       }
 
-      const data: User[] = await res.json()
-      setData(data)
+      const data: T = await res.json();
+      setData(data);
     } catch (error: unknown) {
-      setData([])
+      setData(null);
       setFetchError({
         message:
-          error instanceof Error ? error.message : 'An unknown error occurred',
-      })
+          error instanceof Error ? error.message : "An unknown error occurred",
+      } as U);
     }
-  }, [url])
+  }, [url]);
 
   useEffect(() => {
     apiCall();
-  }, [apiCall])
+  }, [apiCall]);
 
   return {
     data,
     fetchError,
-  }
-}
+  };
+};
 
 export { useFetchData };

@@ -1,25 +1,25 @@
-import React, { createContext, useMemo, useEffect, useState } from 'react';
-import { useFetchData } from '../../hooks/useFetchData.tsx';
-import { User, UserContextValue } from '../../types/user';
-import { ErrorType } from '../../types/logs.ts';
+import React, { createContext, useMemo, useEffect, useState } from "react";
+import { useFetchData } from "../../hooks/useFetchData.tsx";
+import { User, UserContextValue } from "../../types/user";
+import { ErrorType } from "../../types/logs.ts";
 
 export const UserContext = createContext<UserContextValue | undefined>(
   undefined,
 );
-const API_URL = 'https://jsonplaceholder.typicode.com/todos'
+const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<ErrorType | undefined>({ message: '' });
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [error, setError] = useState<ErrorType | undefined>({ message: "" });
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { data, fetchError } = useFetchData(API_URL);
   useEffect(() => {
-    setError(fetchError);
+    setError(fetchError as ErrorType);
     if (data) {
-      setUsers(data);
+      setUsers(data as User[]);
     }
-  }, [data, fetchError])
+  }, [data, fetchError]);
 
   const filteredUsers = useMemo(
     () =>
@@ -40,6 +40,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-}
+};
 
 export default UserProvider;
