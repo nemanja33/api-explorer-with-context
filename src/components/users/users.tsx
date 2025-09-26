@@ -1,7 +1,7 @@
-import { lazy, Suspense } from "react";
-import UserProvider from "../../context/users/userContext.tsx";
-import Spinner from "../spinner/spinner.tsx";
-import SearchBar from "../searchBar/searchBar.tsx";
+import { lazy, Suspense } from 'react';
+import UserProvider from '../../context/users/userContext.tsx';
+import Spinner from '../spinner/spinner.tsx';
+import SearchBar from '../searchBar/searchBar.tsx';
 
 const UserList = lazy(() => import('../userList/userList.tsx'))
 
@@ -16,4 +16,4 @@ const Users = () => {
   )
 };
 
-export default Users
+export default Users;

@@ -1,13 +1,13 @@
-import { User } from '../../types/user'
+import { UserItemProps } from '../../types/user'
 import styles from './styles.module.scss'
 
-const UserItem = (post: User) => {
+const UserItem: React.FC<UserItemProps> = ({ user }) => {
   return (
     <li className={styles.item}>
-      <span className={styles.title}>{post.title}</span>
-      {post.completed && <span> ✅</span>}
+      <span className={styles.title}>{user.title}</span>
+      {user.completed && <span> ✅</span>}
     </li>
   )
 }
 
-export default UserItem
+export default UserItem;

@@ -1,10 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
-import { ErrorType } from "../types/logs";
-import { User } from "../types/user";
+import { useCallback, useEffect, useState } from 'react';
+import { ErrorType } from '../types/logs';
+import { User } from '../types/user';
 
-const useFetchData = (url: string) => {
-  const [ data, setData ] = useState<User[]>([]);
-  const [ fetchError, setFetchError ] = useState<ErrorType>()
+const useFetchData = <T,>(
+  url: string,
+): {
+  data: User[] | null
+  fetchError: ErrorType | undefined
+} => {
+  const [data, setData] = useState<User[]>([]);
+  const [fetchError, setFetchError] = useState<ErrorType>();
 
   const apiCall = useCallback(async () => {
     try {
@@ -12,18 +17,18 @@ const useFetchData = (url: string) => {
 
       if (!res.ok) {
         setFetchError({
-          message: 'Problem fetching data!'
+          message: 'Problem fetching data!',
         })
         return
       }
 
       const data: User[] = await res.json()
       setData(data)
-
     } catch (error: unknown) {
       setData([])
       setFetchError({
-        message: error instanceof Error ? error.message : 'An unknown error occurred'
+        message:
+          error instanceof Error ? error.message : 'An unknown error occurred',
       })
     }
   }, [url])
@@ -32,13 +37,10 @@ const useFetchData = (url: string) => {
     apiCall();
   }, [apiCall])
 
-
   return {
     data,
     fetchError,
   }
 }
 
-export {
-  useFetchData
-}
+export { useFetchData };
