@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ErrorType } from "../types/logs";
 import { User } from "../types/user";
 
-const API_URL = 'https://jsonplaceholder.typicode.com/todos'
-
-const useFetchData = () => {
+const useFetchData = (url: string) => {
   const [ data, setData ] = useState<User[]>([]);
-  const [ error, setError ] = useState<ErrorType>()
+  const [ fetchError, setFetchError ] = useState<ErrorType>()
 
-  const apiCall = async () => {
+  const apiCall = useCallback(async () => {
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(url);
 
       if (!res.ok) {
-        setError({
+        setFetchError({
           message: 'Problem fetching data!'
         })
         return
@@ -22,22 +20,22 @@ const useFetchData = () => {
       const data: User[] = await res.json()
       setData(data)
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       setData([])
-      setError({
-        message: error?.message as string
+      setFetchError({
+        message: error instanceof Error ? error.message : 'An unknown error occurred'
       })
     }
-  }
+  }, [url])
 
   useEffect(() => {
     apiCall();
-  }, [])
+  }, [apiCall])
 
 
   return {
     data,
-    error,
+    fetchError,
   }
 }
 

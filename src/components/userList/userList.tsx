@@ -9,6 +9,10 @@ const UserList = () => {
 
   if (error) return <ErrorMessage>{error}</ErrorMessage>
 
+  if (!filteredUsers.length) {
+    return <h2 className={styles.empty}>No item matches your search!</h2>
+  }
+
   return (
     <ul className={styles.list} aria-live="polite">
       {

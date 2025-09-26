@@ -1,27 +1,27 @@
 import React, { createContext, useMemo, useEffect, useState } from "react";
 import { useFetchData } from "../../hooks/useFetchData.tsx";
 import { User, UserContextValue } from "../../types/user";
+import { ErrorType } from "../../types/logs.ts";
 
-export const UserContext = createContext<UserContextValue>({
-  users: [],
-  filteredUsers: [],
-  error: null,
-  searchQuery: "",
-  setSearchQuery: () => {}
-})
+export const UserContext = createContext<UserContextValue | undefined>(undefined)
+const API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
 const UserProvider = ({
   children
 }: {
   children: React.ReactNode
 }) => {
-  const { data: users, error } = useFetchData();
-  const [, setFilteredData ] = useState<User[]>([]);
+  const [ users, setUsers ] = useState<User[]>([])
+  const [ error, setError ] = useState<ErrorType | undefined>({ message: "" })
   const [ searchQuery, setSearchQuery ] = useState<string>("");
-
+  
+  const { data, fetchError } = useFetchData(API_URL);
   useEffect(() => {
-    setFilteredData(users as User[])
-  }, [users])
+    setError(fetchError);
+    if (data) {
+      setUsers(data);
+    }
+  }, [users, data, fetchError])
 
   const filteredUsers = useMemo(() =>
     (users as User[]).filter(u => u.title.toLowerCase().includes(searchQuery.toLowerCase())),
