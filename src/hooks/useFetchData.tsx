@@ -10,8 +10,16 @@ const useFetchData = () => {
 
   const apiCall = async () => {
     try {
-      const req = await fetch(API_URL);
-      const data = await req.json() as User[]
+      const res = await fetch(API_URL);
+
+      if (!res.ok) {
+        setError({
+          message: 'Problem fetching data!'
+        })
+        return
+      }
+
+      const data: User[] = await res.json()
       setData(data)
 
     } catch (error: any) {
