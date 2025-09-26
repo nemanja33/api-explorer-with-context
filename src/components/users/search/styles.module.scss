@@ -1,0 +1,32 @@
+@use '../../../styles/helpers/' as *;
+
+.label {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.search {
+  width: 98%;
+  border: 1px solid #d7d7d7;
+  border-radius: 4px;
+  padding: 8px;
+
+  @include hover {
+    border-color: #3060e6;
+  }
+
+  @include focus {
+    outline: 2px dashed rgb(38, 87, 36);
+    outline-offset: 2px;
+  }
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: 5px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 10px;
+  }
+}
