@@ -23,6 +23,7 @@ const SearchBar = () => {
         name="search"
         id="search"
         type="text"
+        placeholder='Search...'
         onChange={handleChange}
       />
     </>

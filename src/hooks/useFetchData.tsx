@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { ErrorType } from "../types/logs";
 
 const useFetchData = <T, U>(
   url: string,

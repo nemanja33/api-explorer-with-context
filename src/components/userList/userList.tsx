@@ -5,18 +5,20 @@ import styles from './styles.module.scss'
 import ErrorMessage from '../errorMessage/errorMessage.tsx';
 
 const UserList = () => {
-  const { filteredUsers, error } = useContext(UserContext);
+  const ctx = useContext(UserContext);
 
-  if (error) return <ErrorMessage>{error}</ErrorMessage>
+  if (!ctx) return <ErrorMessage>Something went wrong!</ErrorMessage>
 
-  if (!filteredUsers.length) {
-    return <h2 className={styles.empty}>No item matches your search!</h2>
+  if (ctx.error) return <ErrorMessage>{ctx.error}</ErrorMessage>
+
+  if (!ctx.filteredUsers.length) {
+    return <h2 className={styles.empty} data-testid="error-message">No item matches your search!</h2>
   }
 
   return (
     <ul className={styles.list} aria-live="polite">
-      {filteredUsers.map((post) => {
-        return <UserItem key={post.id} {...post} />;
+      {ctx.filteredUsers.map((user) => {
+        return <UserItem key={user.id} user={user} />;
       })}
     </ul>
   )
