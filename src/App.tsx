@@ -1,9 +1,9 @@
-import Users from './components/users/users.tsx';
+import Todos from "./components/todos/todos.tsx";
 
 function App() {
   return (
     <div className="wrap">
-      <Users />
+      <Todos />
     </div>
   );
 }

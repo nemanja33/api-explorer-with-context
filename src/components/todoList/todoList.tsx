@@ -1,27 +1,27 @@
 import { useContext } from 'react';
-import UserItem from '../userItem/userItem.tsx';
-import { UserContext } from '../../context/users/userContext.tsx';
 import styles from './styles.module.scss'
 import ErrorMessage from '../errorMessage/errorMessage.tsx';
+import { TodoContext } from '../../context/todos/todoContext.tsx';
+import TodoItem from '../todoItem/todoItem.tsx';
 
-const UserList = () => {
-  const ctx = useContext(UserContext);
+const TodoList = () => {
+  const ctx = useContext(TodoContext);
 
   if (!ctx) return <ErrorMessage>Something went wrong!</ErrorMessage>
 
   if (ctx.error) return <ErrorMessage>{ctx.error}</ErrorMessage>
 
-  if (!ctx.filteredUsers.length) {
+  if (!ctx.filteredTodos.length) {
     return <h2 className={styles.empty} data-testid="error-message">No item matches your search!</h2>
   }
 
   return (
     <ul className={styles.list} aria-live="polite">
-      {ctx.filteredUsers.map((user) => {
-        return <UserItem key={user.id} user={user} />;
+      {ctx.filteredTodos.map((todo) => {
+        return <TodoItem key={todo.id} todo={todo} />;
       })}
     </ul>
   )
 }
 
-export default UserList;
+export default TodoList;

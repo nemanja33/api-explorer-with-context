@@ -1,15 +1,15 @@
 import React, { createContext, useMemo, useEffect, useState } from "react";
 import { useFetchData } from "../../hooks/useFetchData.tsx";
-import { User, UserContextValue } from "../../types/user";
+import { Todo, TodoContextValue } from "../../types/todo.ts";
 import { ErrorType } from "../../types/logs.ts";
 
-export const UserContext = createContext<UserContextValue | undefined>(
+export const TodoContext = createContext<TodoContextValue | undefined>(
   undefined,
 );
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
-const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [users, setUsers] = useState<User[]>([]);
+const TodoProvider = ({ children }: { children: React.ReactNode }) => {
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<ErrorType | undefined>({ message: "" });
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -17,29 +17,29 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setError(fetchError as ErrorType);
     if (data) {
-      setUsers(data as User[]);
+      setTodos(data as Todo[]);
     }
   }, [data, fetchError]);
 
-  const filteredUsers = useMemo(
+  const filteredTodos = useMemo(
     () =>
-      (users as User[]).filter((u) =>
+      (todos as Todo[]).filter((u) =>
         u.title.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
-    [searchQuery, users],
+    [searchQuery, todos],
   );
   const value = useMemo(
     () => ({
-      users: users as User[],
-      filteredUsers,
+      todos: todos as Todo[],
+      filteredTodos,
       error: error?.message || null,
       searchQuery,
       setSearchQuery,
     }),
-    [users, filteredUsers, error, searchQuery, setSearchQuery],
+    [todos, filteredTodos, error, searchQuery, setSearchQuery],
   );
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 };
 
-export default UserProvider;
+export default TodoProvider;

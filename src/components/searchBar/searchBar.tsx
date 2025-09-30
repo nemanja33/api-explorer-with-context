@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../../context/users/userContext.tsx';
 import styles from './styles.module.scss'
 import { debounce } from '../../utils/helpers.ts';
+import { TodoContext } from '../../context/todos/todoContext.tsx';
 
 const SearchBar = () => {
-  const userContext = useContext(UserContext)
+  const todoContext = useContext(TodoContext)
 
   const handleChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (userContext) {
-      userContext.setSearchQuery(value);
+    if (todoContext) {
+      todoContext.setSearchQuery(value);
     }
   }, 200)
 

@@ -1,19 +1,19 @@
 import { lazy, Suspense } from 'react';
-import UserProvider from '../../context/users/userContext.tsx';
 import Spinner from '../spinner/spinner.tsx';
 import SearchBar from '../searchBar/searchBar.tsx';
+import TodoProvider from '../../context/todos/todoContext.tsx';
 
-const UserList = lazy(() => import('../userList/userList.tsx'))
+const TodoList = lazy(() => import('../todoList/todoList.tsx'))
 
-const Users = () => {
+const Todos = () => {
   return (
-    <UserProvider>
+    <TodoProvider>
       <SearchBar />
       <Suspense fallback={<Spinner />}>
-        <UserList />
+        <TodoList />
       </Suspense>
-    </UserProvider>
+    </TodoProvider>
   )
 };
 
-export default Users;
+export default Todos;

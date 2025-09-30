@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from '../App.tsx';
-import users from './test-users.json'
+import todos from './test-todos.json'
 
 beforeEach(() => {
   global.fetch = jest.fn()
@@ -19,7 +19,7 @@ test('includes input element', () => {
 test('get all data', async () => {
   global.fetch.mockResolvedValueOnce({
     ok: true,
-    json: async () => users })
+    json: async () => todos })
   render(<App />)
 
   await waitFor(() => {
@@ -31,7 +31,7 @@ test('get all data', async () => {
 test('get data by search term', async () => {
   global.fetch.mockResolvedValueOnce({
     ok: true,
-    json: async () => users })
+    json: async () => todos })
   render(<App />)
   const input = screen.getByPlaceholderText(/Search.../i)
   input.value = 'illo'
@@ -46,7 +46,7 @@ test('get data by search term', async () => {
 test('error message', async () => {
   global.fetch.mockResolvedValueOnce({
     ok: true,
-    json: async () => users })
+    json: async () => todos })
   render(<App />)
   const input = screen.getByPlaceholderText(/Search.../i)
   input.value = 'test123'
